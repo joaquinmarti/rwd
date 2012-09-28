@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <!--> <html class="no-js"> <!--<![endif]-->
+<head>
+
+<title>rwd test</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- Styles - General -->
+<link href="stylesheets/common.css" type="text/css" rel="stylesheet" media="all">
+
+<!-- Styles - Media queries -->
+<link href="stylesheets/mobile.css" media="screen and (max-width: 767px)" type="text/css" rel="stylesheet" data-name="mobile">
+<link href="stylesheets/portrait.css" media="screen and (min-width: 768px) and (max-width: 1023px)" type="text/css" rel="stylesheet" data-name="portrait">
+<link href="stylesheets/landscape.css" media="screen and (min-width: 1024px) and (max-width: 1200px)" type="text/css" rel="stylesheet" data-name="landscape">
+<link href="stylesheets/desktop.css" media="screen and (min-width: 1200px)" type="text/css" rel="stylesheet" data-name="desktop">
+
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="../matchmedia.js"></script>
+<script type="text/javascript" src="../rwd.js"></script>
+<script type="text/javascript" src="../jquery.rwd.js"></script>
+
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $('picture').picture({
+      before: function() {
+        console.log('before 1');
+      },
+      after: function() {
+        console.log('after 1');
+      },
+      loadonce: function() {
+        console.log('load once 1');
+      },
+      load: function() {
+        console.log('load 1');
+      }
+    });
+
+  });
+
+</script>
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <h1>Picture element with <em>srcset</em> and <strong>jQuery Adapter</strong></h1>
+
+    <picture alt="Průhonice">
+      <source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_s.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_q.jpg 2x" data-media="mobile">
+      <source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_n.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_z.jpg 2x" data-media="portrait">
+      <source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_c.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_2836389289_h.jpg 2x" data-media="landscape">
+      <source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_b.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_6d428d121a_k.jpg 2x" data-media="desktop">
+
+      <noscript>
+        <img src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_c.jpg" alt="Průhonice">
+      </noscript>
+    </picture>
+
+    <hr>
+
+    <h2>Media Queries</h2>
+
+      <pre>
+&lt;link href="stylesheets/mobile.css" media="screen and (max-width: 767px)" type="text/css" rel="stylesheet" data-name="mobile"&gt;
+&lt;link href="stylesheets/portrait.css" media="screen and (min-width: 768px) and (max-width: 1023px)" type="text/css" rel="stylesheet" data-name="portrait"&gt;
+&lt;link href="stylesheets/landscape.css" media="screen and (min-width: 1024px) and (max-width: 1200px)" type="text/css" rel="stylesheet" data-name="landscape"&gt;
+&lt;link href="stylesheets/desktop.css" media="screen and (min-width: 1200px)" type="text/css" rel="stylesheet" data-name="desktop"&gt;
+      </pre>
+
+    <h2>Picture tag</h2>
+
+    <pre>
+&lt;picture alt="Průhonice" class="picture_3"&gt;
+  &lt;source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_s.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_q.jpg 2x" data-media="mobile"&gt;
+  &lt;source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_n.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_z.jpg 2x" data-media="portrait"&gt;
+  &lt;source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_c.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_2836389289_h.jpg 2x" data-media="landscape"&gt;
+  &lt;source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_b.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_6d428d121a_k.jpg 2x" data-media="desktop"&gt;
+
+  &lt;noscript&gt;
+    &lt;img src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_c.jpg" alt="Průhonice"&gt;
+  &lt;/noscript&gt;
+&lt;/picture&gt;
+    </pre>
+
+    <h2>Javascript</h2>
+
+    <pre>
+$(document).ready(function() {
+  $('picture').picture({
+    before: function() {
+      console.log('before 1');
+    },
+    after: function() {
+      console.log('after 1');
+    },
+    loadonce: function() {
+      console.log('load once 1');
+    },
+    load: function() {
+      console.log('load 1');
+    }
+  });
+
+});
+    </pre>
+
+  </div>
+
+</body>
+
+</html>

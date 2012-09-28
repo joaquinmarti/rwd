@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <!--> <html class="no-js"> <!--<![endif]-->
+<head>
+
+<title>rwd test</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- Styles - General -->
+<link href="stylesheets/common.css" type="text/css" rel="stylesheet" media="all">
+
+<!-- Styles - Media queries -->
+<link href="stylesheets/mobile.css" media="screen and (max-width: 767px)" type="text/css" rel="stylesheet" data-name="mobile">
+<link href="stylesheets/portrait.css" media="screen and (min-width: 768px) and (max-width: 1023px)" type="text/css" rel="stylesheet" data-name="portrait">
+<link href="stylesheets/landscape.css" media="screen and (min-width: 1024px) and (max-width: 1200px)" type="text/css" rel="stylesheet" data-name="landscape">
+<link href="stylesheets/desktop.css" media="screen and (min-width: 1200px)" type="text/css" rel="stylesheet" data-name="desktop">
+
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="../matchmedia.js"></script>
+<script type="text/javascript" src="../rwd.js"></script>
+
+<script type="text/javascript">
+
+window.addEventListener("DOMContentLoaded", function(){
+  var log = document.getElementById('log');
+
+  rwd.register('mobile', {
+    match: function() {
+      var p = document.createElement('p');
+      p.innerHTML = 'Mobile matched';
+      log.appendChild(p);
+    },
+    unmatch: function() {
+      var p = document.createElement('p');
+      p.innerHTML = 'Mobile unmatched';
+      log.appendChild(p);
+    }
+  });
+
+  rwd.register('portrait', {
+    match: function() {
+      var p = document.createElement('p');
+      p.innerHTML = 'Portrait matched';
+      log.appendChild(p);
+    },
+    unmatch: function() {
+      var p = document.createElement('p');
+      p.innerHTML = 'Portrait unmatched';
+      log.appendChild(p);
+    }
+  });
+
+  rwd.register('landscape', {
+    match: function() {
+      var p = document.createElement('p');
+      p.innerHTML = 'Landscape matched';
+      log.appendChild(p);
+    },
+    unmatch: function() {
+      var p = document.createElement('p');
+      p.innerHTML = 'Landscape unmatched';
+      log.appendChild(p);
+    }
+  });
+
+  rwd.register('desktop', {
+    match: function() {
+      var p = document.createElement('p');
+      p.innerHTML = 'Desktop matched';
+      log.appendChild(p);
+    },
+    unmatch: function() {
+      var p = document.createElement('p');
+      p.innerHTML = 'Desktop unmatched';
+      log.appendChild(p);
+    }
+  });
+
+});
+
+
+</script>
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <h1>Register code</h1>
+
+    <p>Execute Javascript code inside <em>match</em> or <em>unmatch</em> callbacks, triggered when media query breakpoints change. You need to define a <em>data-name</em> attribute for each of media query tags.</p>
+
+    <h2>Example event log</h2>
+
+    <div id="log">
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
