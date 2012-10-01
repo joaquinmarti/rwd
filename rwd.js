@@ -82,13 +82,19 @@
 
       if (picture.testUpdateSrc(rpicture.element, src)) { // Test if src has to be changed
         // Execute before
-        rpicture.callback.before.call();
+        if (test.isFunction(rpicture.callback.before)) {
+          rpicture.callback.before.call();
+        }
+
 
         // Transform picture into img tag
         picture.render(rpicture, src, pr);
 
         // Execute After
-        rpicture.callback.after.call();
+        if (test.isFunction(rpicture.callback.after)) {
+          rpicture.callback.after.call();
+        }
+
       }
 
     },
@@ -118,12 +124,17 @@
 
         // Load Once callback, will execute just first time
         if (!rpicture.executed) {
-          rpicture.callback.loadonce.call();
+          if (test.isFunction(rpicture.callback.loadonce)) {
+            rpicture.callback.loadonce.call();
+          }
           rpicture.executed = true;
         }
 
         // Load callback, it will execute every breakpoint
-        rpicture.callback.load.call();
+        if (test.isFunction(rpicture.callback.load)) {
+          rpicture.callback.load.call();
+        }
+
       };
 
       // Change SRC
