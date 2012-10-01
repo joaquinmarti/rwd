@@ -4,7 +4,7 @@ rwd is a Javascript library to help responsive design work. The basic idea is to
 
 1. A Javascript flag indicating which media query is active at the current window size.
 2. A way to execute Javascript callbacks when a media query matches or unmatches after browser resize.
-3. A polyfill for picture W3C tag, including a set of callbacks.
+3. Picture W3C tag support, including a set of callbacks, but not exactly as a polyfill.
 
 ## Examples
 
@@ -39,11 +39,13 @@ rwd.register() needs two parameters:
 1. Name of the media query you want to attach the callbacks to.
 2. An object with two optional properties: match and unmatch.
 
-### Picture polyfill
+### Picture support
 
-Picture polyfill adds support for responsive content images and includes a set of optional callbacks to execute code before and after changing the image, in the first load of the image and after every load event.
+rwd adds picture tag support for responsive content images and includes a set of optional callbacks to execute code before and after changing the image, in the first load of the image and after every load event.
 
-The markdown has two options: with src attribute or with srcset for different dpr.
+It's not exactly a polyfill because you will need to init by Javascript the picture support, with the advantage of setting up the callbacks. If you need a real picture polyfill I recommend you <a href="https://github.com/scottjehl/picturefill">Picturefill</a>.
+
+The markdown needed in rwd has two options: with src attribute or with srcset for different dpr.
 
 #### SRC attribute
 
@@ -75,10 +77,10 @@ The markdown has two options: with src attribute or with srcset for different dp
 
     rwd.picture(document.getElementsByTagName('picture'), {
       before: function() {
-        // This code will run before chanching the image
+        // This code will run before changing the image
       },
       after: function() {
-        // This code will run inmdiately after chanching the image
+        // This code will run inmdiately after changing the image
       },
       loadonce: function() {
         // This code will run after the first load of each image
@@ -90,15 +92,15 @@ The markdown has two options: with src attribute or with srcset for different dp
 
 #### jQuery adapter
 
-With the jQuery adapter it's possible to use rwd picture polyfill as a jQuery plugin:
+With the jQuery adapter it's possible to use rwd picture support as a jQuery plugin:
 
     $(document).ready(function() {
       $('picture').picture({
         before: function() {
-          // This code will run before chanching the image
+          // This code will run before changing the image
         },
         after: function() {
-          // This code will run inmdiately after chanching the image
+          // This code will run inmdiately after changing the image
         },
         loadonce: function() {
           // This code will run after the first load of each image
@@ -109,6 +111,10 @@ With the jQuery adapter it's possible to use rwd picture polyfill as a jQuery pl
       });
 
     });
+
+#### Native picture support
+
+In rwd picture it's possible to work with media attributes in source tag, instead of data-media naming. If you set the media attribute, rwd picture will use it instead of data-media reference. It gives support for future browsers which will support natively the picture tag.
 
 ## Matchmedia
 
