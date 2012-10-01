@@ -114,7 +114,7 @@ With the jQuery adapter it's possible to use rwd picture support as a jQuery plu
 
 #### Native picture support
 
-In rwd picture it's possible to work with media attributes in source tag, instead of data-media naming. If you set the media attribute, rwd picture will use it instead of data-media reference. It gives support for future browsers which will support natively the picture tag.
+In rwd picture it's possible to work with media attributes in source tag, instead of data-media naming. If you set the media attribute, rwd picture will use it instead of data-media reference. It gives compatibilty for future browsers which will support natively the picture tag.
 
 ## Matchmedia
 
