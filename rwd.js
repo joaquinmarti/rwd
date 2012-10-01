@@ -3,6 +3,9 @@
 
 (function(window, undefined) {
 
+  // Enable strict mode
+  "use strict";
+
   var document = window.document;
   var mq = [];
   var activeBreakpoint;
@@ -30,7 +33,7 @@
     setActive : function() {
       for (var i = 0, length = mq.length; i < length; i++) {
         if (window.matchMedia(mq[i].media).matches) {
-          if (activeBreakpoint != mq[i].name) {
+          if (activeBreakpoint !== mq[i].name) {
             activeBreakpoint = mq[i].name;
             events.breakpointChange(); // Triggers breakpoint change event
           }
@@ -41,7 +44,7 @@
     // Get media from name
     getMedia : function(name) {
       for (var i = 0, length = mq.length; i < length; i++) {
-        if (name == mq[i].name) {
+        if (name === mq[i].name) {
           return mq[i].media;
         }
       }
@@ -121,7 +124,7 @@
 
         // Load callback, it will execute every breakpoint
         rpicture.callback.load.call();
-      }
+      };
 
       // Change SRC
       img.src = src;
@@ -140,7 +143,7 @@
       var img = element.getElementsByTagName('img')[0];
       var currentSrc = (img) ? img.getAttribute('src') : '';
 
-      if (src != currentSrc) {
+      if (src !== currentSrc) {
         return true;
       }
 
@@ -184,7 +187,7 @@
             return {
               src: srcsetParts[0],
               pr: pixelratio // Device pixel ratio
-            }
+            };
           }
         }
       }
@@ -192,7 +195,7 @@
         return {
           src: source.getAttribute('src'),
           pr: 1
-        }
+        };
       }
     }
 
@@ -203,20 +206,26 @@
     execute : function() {
       // Loop codeblocks media
       for (var media in codeBlocks) {
-        var mediaQuery = breakpoints.getMedia(media);
-
-        // If media matches execute match callback collection
-        if (window.matchMedia(mediaQuery).matches) {
-          for (var i = 0, length = codeBlocks[media]['match'].length; i < length; i++) {
-            codeBlocks[media]['match'][i].call();
-          }
+        if (codeBlocks.hasOwnProperty(media)) {
+          code.executeOne(media);
         }
+      }
+    },
 
-        // If media unmatches execute unmatch callback collection
-        else {
-          for (var i = 0, length = codeBlocks[media]['unmatch'].length; i < length; i++) {
-            codeBlocks[media]['unmatch'][i].call();
-          }
+    executeOne: function(media) {
+      var mediaQuery = breakpoints.getMedia(media);
+
+      // If media matches execute match callback collection
+      if (window.matchMedia(mediaQuery).matches) {
+        for (var i = 0, length = codeBlocks[media].match.length; i < length; i++) {
+          codeBlocks[media].match[i].call();
+        }
+      }
+
+      // If media unmatches execute unmatch callback collection
+      else {
+        for (var n = 0, nlength = codeBlocks[media].unmatch.length; n < nlength; n++) {
+          codeBlocks[media].unmatch[n].call();
         }
       }
     }
@@ -232,20 +241,25 @@
       return false;
     },
 
-    // Test if the object is a picture DOM element
-    isDOMElement : function(o){
+    // Test if the object is a picture element
+    isPictureElement : function(o){
       return (
-        typeof HTMLElement === 'object' ? o instanceof HTMLElement && o.tagName === 'picture' : //DOM2
-        o && typeof o === 'object' && o.nodeType === 1 && typeof o.nodeName === 'string' && o.tagName === 'picture'
+        typeof HTMLElement === 'object' ? o instanceof HTMLElement && o.tagName === 'PICTURE' : //DOM2
+        o && typeof o === 'object' && o.nodeType === 1 && typeof o.nodeName === 'string' && o.tagName === 'PICTURE'
       );
     },
 
-    // Test if object is an array of elements
-    isArray : function(o) {
-      return true;
+    // Test if the object is a function
+    isFunction : function(o) {
+      if (typeof(o) === "function") {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
-  }
+  };
 
   /* Helpers */
   var helper = {
@@ -269,11 +283,11 @@
   /* Main object */
   var rwd = (function() {
 
-    var public = {
+    var core = {
 
       init : function() {
         breakpoints.get();
-        breakpoints.setActive()
+        breakpoints.setActive();
         events.bind();
       },
 
@@ -292,27 +306,30 @@
           return;
         }
 
-        // @todo: Try arguments and clean them
-
         // Loop elements
         for (var i = 0, length = elements.length; i < length; i++) {
 
-          rpicture = {
-            'element': elements[i],
-            'callback': {
-              'before': options.before,
-              'after': options.after,
-              'load': options.load,
-              'loadonce': options.loadonce
-            },
-            'executed': false
-          };
+          // Test if the element is a picture tag
+          if(test.isPictureElement(elements[i])) {
 
-          // Save in cache
-          rpictures.push(rpicture);
+            // Prepare rpicture object
+            rpicture = {
+              'element': elements[i],
+              'callback': {
+                'before': options.before,
+                'after': options.after,
+                'load': options.load,
+                'loadonce': options.loadonce
+              },
+              'executed': false
+            };
 
-          // Process
-          picture.process(rpictures[rpictures.length - 1]);
+            // Save in cache
+            rpictures.push(rpicture);
+
+            // Process
+            picture.process(rpictures[rpictures.length - 1]);
+          }
 
         }
 
@@ -321,19 +338,26 @@
       register : function(media, callbacks) {
         if (!codeBlocks[media]) {
           codeBlocks[media] = [];
-          codeBlocks[media]['match'] = [];
-          codeBlocks[media]['unmatch'] = [];
+          codeBlocks[media].match = [];
+          codeBlocks[media].unmatch = [];
         }
 
-        // @todo: Test if callbacks.match and unmatch are functions
+        // Check callbacks and cache them
+        if (callbacks.match && test.isFunction(callbacks.match)) {
+          codeBlocks[media].match.push(callbacks.match);
+        }
 
-        if (callbacks.match) codeBlocks[media]['match'].push(callbacks.match);
-        if (callbacks.unmatch) codeBlocks[media]['unmatch'].push(callbacks.unmatch);
+        if (callbacks.unmatch && test.isFunction(callbacks.unmatch)) {
+          codeBlocks[media].unmatch.push(callbacks.unmatch);
+        }
+
+        // Execute once
+        code.executeOne(media);
       }
 
     };
 
-    return public;
+    return core;
 
   })();
 
