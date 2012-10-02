@@ -66,7 +66,7 @@ rwd adds picture tag support for responsive content images and includes a set of
 
 It's not exactly a polyfill because you will need to init by Javascript the picture support, with the advantage of setting up the callbacks. If you need a real picture polyfill I recommend you <a href="https://github.com/scottjehl/picturefill">Picturefill</a>.
 
-The markdown needed in rwd has two options: with src attribute or with srcset for different dpr.
+The html code needed in rwd has two options: with src attribute or with srcset for different dpr.
 
 #### SRC attribute
 
