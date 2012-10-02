@@ -23,6 +23,12 @@ You have to add a data-name attribute to the link tags of each media query. Thes
 
 rwd.getBreakpoint() will return the content of data-name attribute of the active media query at the current window size.
 
+### Get all getbreakpoints
+
+    rwd.getBreakpoints();
+
+rwd.getBreakpoints(); will return an array with the media queries defined in the <link> tags. Each media query has "name" and "media" properties.
+
 ### Media Query callbacks
 
     rwd.register('mobile', {
@@ -38,6 +44,21 @@ rwd.register() needs two parameters:
 
 1. Name of the media query you want to attach the callbacks to.
 2. An object with two optional properties: match and unmatch.
+
+Each callback has two optional parameters: name and media. With the next code you can set a class (using jQuery) in the body for each breakpoint, using getBreakpoints() and the optional callback parameters.
+
+    var breakpoints = rwd.getBreakpoints();
+
+    for (var i = 0, length = breakpoints.length; i < length; i++) {
+      rwd.register(breakpoints[i].name, {
+        match: function(name) {
+          $('body').addClass(name);
+        },
+        unmatch: function(name) {
+          $('body').removeClass(name);
+        }
+      });
+    }
 
 ### Picture support
 

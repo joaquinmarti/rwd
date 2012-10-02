@@ -229,14 +229,14 @@
       // If media matches execute match callback collection
       if (window.matchMedia(mediaQuery).matches) {
         for (var i = 0, length = codeBlocks[media].match.length; i < length; i++) {
-          codeBlocks[media].match[i].call();
+          codeBlocks[media].match[i].call(rwd, media, mediaQuery);
         }
       }
 
       // If media unmatches execute unmatch callback collection
       else {
         for (var n = 0, nlength = codeBlocks[media].unmatch.length; n < nlength; n++) {
-          codeBlocks[media].unmatch[n].call();
+          codeBlocks[media].unmatch[n].call(rwd, media, mediaQuery);
         }
       }
     }
@@ -304,6 +304,10 @@
 
       getBreakpoint : function() {
         return activeBreakpoint;
+      },
+
+      getBreakpoints : function() {
+        return mq;
       },
 
       nativePicture : test.NativePicture,

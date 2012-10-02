@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <!--> <html class="no-js"> <!--<![endif]-->
+<head>
+
+<title>rwd test</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- Styles - General -->
+<link href="stylesheets/common.css" type="text/css" rel="stylesheet" media="all">
+
+<!-- Styles - Media queries -->
+<link href="stylesheets/mobile.css" media="screen and (max-width: 767px)" type="text/css" rel="stylesheet" data-name="mobile">
+<link href="stylesheets/portrait.css" media="screen and (min-width: 768px) and (max-width: 1023px)" type="text/css" rel="stylesheet" data-name="portrait">
+<link href="stylesheets/landscape.css" media="screen and (min-width: 1024px) and (max-width: 1200px)" type="text/css" rel="stylesheet" data-name="landscape">
+<link href="stylesheets/desktop.css" media="screen and (min-width: 1200px)" type="text/css" rel="stylesheet" data-name="desktop">
+
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="../matchmedia.js"></script>
+<script type="text/javascript" src="../rwd.js"></script>
+
+<script type="text/javascript">
+
+window.addEventListener("DOMContentLoaded", function(){
+
+    var breakpoints = rwd.getBreakpoints();
+
+    for (var i = 0, length = breakpoints.length; i < length; i++) {
+      rwd.register(breakpoints[i].name, {
+        match: function(name) {
+          $('body').addClass(name);
+        },
+        unmatch: function(name) {
+          $('body').removeClass(name);
+        }
+      });
+    }
+
+});
+
+
+</script>
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <h1>Change body class depending on the active breakpoint</h1>
+
+    <pre>
+window.addEventListener("DOMContentLoaded", function(){
+
+  var breakpoints = rwd.getBreakpoints();
+
+  for (var i = 0, length = breakpoints.length; i < length; i++) {
+    rwd.register(breakpoints[i].name, {
+      match: function(name) {
+        $('body').addClass(name);
+      },
+      unmatch: function(name) {
+        $('body').removeClass(name);
+      }
+    });
+  }
+
+});
+
+    </pre>
+
+  </div>
+
+</body>
+
+</html>
