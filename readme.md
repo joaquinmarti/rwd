@@ -60,6 +60,11 @@ Each callback has two optional parameters: name and media. With the next code yo
       });
     }
 
+### Get Viewport sizes
+
+    rwd.getViewporHeight();
+    rwd.getViewporWidth();
+
 ### Picture support
 
 rwd adds picture tag support for responsive content images and includes a set of optional callbacks to execute code before and after changing the image, in the first load of the image and after every load event.

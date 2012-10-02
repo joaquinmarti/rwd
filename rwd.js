@@ -11,6 +11,7 @@
   var activeBreakpoint;
   var rpictures = []; // Save element reference, options
   var codeBlocks = []; // Save code blocks to execute
+  var viewport = {};
 
   /* Breakpoints  */
   var breakpoints = {
@@ -242,6 +243,50 @@
     }
   };
 
+  /* Sizes */
+  var size = {
+
+    // Append test container
+    appendDiv : function() {
+      var rwdTester = document.createElement('div');
+      rwdTester.id = 'rwd-test-viewport';
+      rwdTester.style.cssText = 'position:fixed;height:100%;width:100%;top:-100%;left:-100%';
+      document.body.appendChild(rwdTester);
+      return rwdTester;
+    },
+
+    // Update sizes
+    updateSize : function() {
+      var rwdTester = document.getElementById('rwd-test-viewport');
+
+      // Create rwdTester if it doesn't exist
+      if (!rwdTester) {
+        rwdTester = size.appendDiv();
+      }
+
+      // Reset sizes
+      viewport.size = {};
+      viewport.size.height = rwdTester.clientHeight;
+      viewport.size.width = rwdTester.clientWidth;
+
+      // Destroy rwdTester
+      document.body.removeChild(rwdTester);
+    },
+
+    // Get Width
+    getWidth : function() {
+      size.updateSize();
+      return viewport.size.width;
+    },
+
+    // Get Height
+    getHeight : function() {
+      size.updateSize();
+      return viewport.size.height;
+    }
+
+  };
+
   /* Tests */
   var test = {
     // Test if <picture> is supported natively by browser
@@ -368,6 +413,14 @@
 
         // Execute once
         code.executeOne(media);
+      },
+
+      getViewporWidth : function() {
+        return size.getWidth();
+      },
+
+      getViewporHeight : function() {
+        return size.getHeight();
       }
 
     };
