@@ -23,7 +23,7 @@ You have to add a data-name attribute to the link tags of each media query. Thes
 
 rwd.getBreakpoint() will return the content of data-name attribute of the active media query at the current window size.
 
-### Get all getbreakpoints
+### Get all breakpoints
 
     rwd.getBreakpoints();
 
