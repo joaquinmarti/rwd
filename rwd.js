@@ -415,11 +415,11 @@
         code.executeOne(media);
       },
 
-      getViewporWidth : function() {
+      getViewportWidth : function() {
         return size.getWidth();
       },
 
-      getViewporHeight : function() {
+      getViewportHeight : function() {
         return size.getHeight();
       }
 

@@ -62,8 +62,8 @@ Each callback has two optional parameters: name and media. With the next code yo
 
 ### Get Viewport sizes
 
-    rwd.getViewporHeight();
-    rwd.getViewporWidth();
+    rwd.getViewportHeight();
+    rwd.getViewportWidth();
 
 ### Picture support
 
