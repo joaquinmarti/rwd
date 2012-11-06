@@ -76,6 +76,9 @@
       // Get picture sources
       source = picture.getActiveSource(rpicture.element);
 
+      // Abort process if no source is defined
+      if (!source) return false;
+
       // Find active src
       oSrc = picture.getCurrentSrc(source);
       src = oSrc.src; // Current SRC
@@ -365,6 +368,9 @@
         if (test.nativePicture()) {
           return;
         }
+
+        // Test options
+        if (!options) options = {};
 
         // Loop elements
         for (var i = 0, length = elements.length; i < length; i++) {
