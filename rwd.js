@@ -9,6 +9,7 @@
   var document = window.document;
   var mq = [];
   var activeBreakpoint;
+  var lastActiveBreakpoint;
   var rpictures = []; // Save element reference, options
   var codeBlocks = []; // Save code blocks to execute
   var viewport = {};
@@ -35,6 +36,7 @@
       for (var i = 0, length = mq.length; i < length; i++) {
         if (window.matchMedia(mq[i].media).matches) {
           if (activeBreakpoint !== mq[i].name) {
+            lastActiveBreakpoint = activeBreakpoint;
             activeBreakpoint = mq[i].name;
             events.breakpointChange(); // Triggers breakpoint change event
           }
@@ -240,9 +242,27 @@
       // If media unmatches execute unmatch callback collection
       else {
         for (var n = 0, nlength = codeBlocks[media].unmatch.length; n < nlength; n++) {
-          codeBlocks[media].unmatch[n].call(rwd, media, mediaQuery);
+          if (lastActiveBreakpoint == media) {
+            codeBlocks[media].unmatch[n].call(rwd, media, mediaQuery);
+          }
         }
       }
+    },
+
+    executeThis: function(media, callback, match) {
+      var mediaQuery = breakpoints.getMedia(media);
+
+      if (window.matchMedia(mediaQuery).matches) {
+        if (match) {
+          callback.call(rwd, media, mediaQuery);
+        }
+      }
+      else {
+        if (!match) {
+          callback.call(rwd, media, mediaQuery);
+        }
+      }
+
     }
   };
 
@@ -408,17 +428,18 @@
           codeBlocks[media].unmatch = [];
         }
 
+
         // Check callbacks and cache them
         if (callbacks.match && test.isFunction(callbacks.match)) {
           codeBlocks[media].match.push(callbacks.match);
+          code.executeThis(media, callbacks.match, true);
         }
 
         if (callbacks.unmatch && test.isFunction(callbacks.unmatch)) {
           codeBlocks[media].unmatch.push(callbacks.unmatch);
+          code.executeThis(media, callbacks.unmatch, false);
         }
 
-        // Execute once
-        code.executeOne(media);
       },
 
       getViewportWidth : function() {
