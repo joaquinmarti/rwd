@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <!--> <html class="no-js"> <!--<![endif]-->
+<head>
+
+<title>rwd test</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- Styles - General -->
+<link href="stylesheets/common.css" type="text/css" rel="stylesheet" media="all">
+
+<!-- Styles - Media queries -->
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="../matchmedia.js"></script>
+<script type="text/javascript" src="../rwd.js"></script>
+
+<script type="text/javascript">
+
+rwd.push([
+  {
+    'name': 'mobile',
+    'media': 'screen and (max-width: 767px)'
+  },
+  {
+    'name': 'portrait',
+    'media': 'screen and (min-width: 768px) and (max-width: 1023px)'
+  },
+  {
+    'name': 'landscape',
+    'media': 'screen and (min-width: 1024px) and (max-width: 1200px)'
+  },
+  {
+    'name': 'desktop',
+    'media': 'screen and (min-width: 1200px)'
+  }
+]);
+
+window.addEventListener("DOMContentLoaded", function(){
+
+    var breakpoints = rwd.getBreakpoints();
+
+    for (var i = 0, length = breakpoints.length; i < length; i++) {
+      rwd.register(breakpoints[i].name, {
+        match: function(name) {
+          $('body').addClass(name);
+        },
+        unmatch: function(name) {
+          $('body').removeClass(name);
+        }
+      });
+    }
+
+});
+
+
+</script>
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <h1>Push breakpoints manually instead of reading them from data-name attribute</h1>
+
+    <pre>
+rwd.push([
+  {
+    'name': 'mobile',
+    'media': 'screen and (max-width: 767px)'
+  },
+  {
+    'name': 'portrait',
+    'media': 'screen and (min-width: 768px) and (max-width: 1023px)'
+  },
+  {
+    'name': 'landscape',
+    'media': 'screen and (min-width: 1024px) and (max-width: 1200px)'
+  },
+  {
+    'name': 'desktop',
+    'media': 'screen and (min-width: 1200px)'
+  }
+]);
+    </pre>
+
+  </div>
+
+</body>
+
+</html>

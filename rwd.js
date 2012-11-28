@@ -31,6 +31,16 @@
       }
     },
 
+    // Push manually media queries into the object
+    push : function(mediaQueries) {
+      for (var i = 0, length = mediaQueries.length; i < length; i++){
+        mq.push({
+          'name' : mediaQueries[i].name,
+          'media' : mediaQueries[i].media
+        });
+      }
+    },
+
     // Set active breakpoint
     setActive : function() {
       for (var i = 0, length = mq.length; i < length; i++) {
@@ -368,6 +378,10 @@
         breakpoints.get();
         breakpoints.setActive();
         events.bind();
+      },
+
+      push : function(mediaQueries) {
+        breakpoints.push(mediaQueries);
       },
 
       getBreakpoint : function() {
