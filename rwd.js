@@ -68,10 +68,17 @@
   /* Events */
   var events = {
     bind : function() {
-      window.addEventListener('resize', function() {
-        breakpoints.setActive();
-        picture.refresh();
-      });
+      if (window.addEventListener) {
+        window.addEventListener('resize', events.resizeEvent);
+      }
+      else if (window.attachEvent) {
+        window.attachEvent('onresize', events.resizeEvent);
+      }
+    },
+    
+    resizeEvent : function() {
+      breakpoints.setActive();
+      picture.refresh();
     },
 
     breakpointChange : function() {
