@@ -3,19 +3,42 @@
 rwd is a Javascript library to help responsive design work. The basic idea is to name each media query link tags in &lt;header&gt; with a data-name attribute, and provide a set of tools to work:
 
 1. A Javascript flag indicating which media query is active at the current window size.
-2. A way to execute Javascript callbacks when a media query matches or unmatches after browser resize.
-3. Picture W3C tag support, including a set of callbacks, but not exactly as a polyfill.
+2. A way to execute Javascript callbacks when a media query matches or unmatches on the page load and after browser resize.
+3. Picture tag support, including a set of callbacks, but not exactly as a polyfill.
 
 ## Examples
 
-### How to name media queries
+### Name media queries with data-name attribute
 
-You have to add a data-name attribute to the link tags of each media query. These names will be used in the other two functionalityies of rwd. The idea behind them is to define the breakpoints in the &lt;header&gt; of the document and use an alias in other parts of the document, instead of writing the media attribute everywhere.
+You have to add a data-name attribute to the link tags of each media query. These names will be used in the other functionalities of rwd. The idea behind that is to define the breakpoints in the &lt;header&gt; of the document and use an alias in other parts of the code, instead of writing the media attribute everywhere.
 
     <link href="stylesheets/mobile.css" media="screen and (max-width: 767px)" type="text/css" rel="stylesheet" data-name="mobile">
     <link href="stylesheets/portrait.css" media="screen and (min-width: 768px) and (max-width: 1023px)" type="text/css" rel="stylesheet" data-name="portrait">
-    <link href="stylesheets/landscape.css" media="screen and (min-width: 1024px) and (max-width: 1200px)" type="text/css" rel="stylesheet" data-name="landscape">
+    <link href="stylesheets/landscape.css" media="screen and (min-width: 1024px) and (max-width: 1199px)" type="text/css" rel="stylesheet" data-name="landscape">
     <link href="stylesheets/desktop.css" media="screen and (min-width: 1200px)" type="text/css" rel="stylesheet" data-name="desktop">
+
+### Name media queries by Javascript
+
+The second option to define the media queries names is to use a Javascript method.
+
+    rwd.push([
+      {
+        'name': 'mobile',
+        'media': 'screen and (max-width: 767px)'
+      },
+      {
+        'name': 'portrait',
+        'media': 'screen and (min-width: 768px) and (max-width: 1023px)'
+      },
+      {
+        'name': 'landscape',
+        'media': 'screen and (min-width: 1024px) and (max-width: 1199px)'
+      },
+      {
+        'name': 'desktop',
+        'media': 'screen and (min-width: 1200px)'
+      }
+    ]);
 
 ### Javascript flag
 
@@ -27,7 +50,7 @@ rwd.getBreakpoint() will return the content of data-name attribute of the active
 
     rwd.getBreakpoints();
 
-rwd.getBreakpoints(); will return an array with the media queries defined in the <link> tags. Each media query has "name" and "media" properties.
+rwd.getBreakpoints() will return an array with the media queries defined in the <link> tags or by push method. Each media query has "name" and "media" properties.
 
 ### Media Query callbacks
 
@@ -88,7 +111,7 @@ The html code needed in rwd has two options: with src attribute or with srcset f
 
 #### SRCSET attribute
 
-    <picture alt="Průhonice" class="picture_3">
+    <picture alt="Průhonice" class="picture_2">
       <source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_s.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_q.jpg 2x" data-media="mobile">
       <source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_n.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_z.jpg 2x" data-media="portrait">
       <source srcset="http://farm6.staticflickr.com/5468/7413015628_230da0a4f6_c.jpg 1x, http://farm6.staticflickr.com/5468/7413015628_2836389289_h.jpg 2x" data-media="landscape">
@@ -140,7 +163,7 @@ With the jQuery adapter it's possible to use rwd picture support as a jQuery plu
 
 #### Native picture support
 
-In rwd picture it's possible to work with media attributes in source tag, instead of data-media naming. If you set the media attribute, rwd picture will use it instead of data-media reference. It gives compatibilty for future browsers which will support natively the picture tag.
+rwd picture is able to work with a media attribute in the source tag, instead of data-media. If you set the media attribute, rwd picture will use it instead of data-media reference. It gives compatibilty for future browsers which will support natively the picture tag.
 
 ## IE Support
 
