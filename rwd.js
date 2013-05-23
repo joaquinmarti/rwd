@@ -43,14 +43,23 @@
 
     // Set active breakpoint
     setActive : function() {
-      for (var i = 0, length = mq.length; i < length; i++) {
-        if (window.matchMedia(mq[i].media).matches) {
-          if (activeBreakpoint !== mq[i].name) {
-            lastActiveBreakpoint = activeBreakpoint;
-            activeBreakpoint = mq[i].name;
-            events.breakpointChange(); // Triggers breakpoint change event
+      if (window.matchMedia) {
+        for (var i = 0, length = mq.length; i < length; i++) {
+          if (window.matchMedia(mq[i].media).matches) {
+            if (activeBreakpoint !== mq[i].name) {
+              lastActiveBreakpoint = activeBreakpoint;
+              activeBreakpoint = mq[i].name;
+              events.breakpointChange(); // Triggers breakpoint change event
+            }
           }
         }
+      }
+      else {
+        if (mq != undefined && mq != null && mq != '') {
+          lastActiveBreakpoint = mq[mq.length - 1].name;
+          activeBreakpoint = mq[mq.length - 1].name;
+        }
+
       }
     },
 
@@ -61,6 +70,9 @@
           return mq[i].media;
         }
       }
+
+      // Fallback
+      return mq[mq.length - 1];
     }
 
   };
@@ -75,7 +87,7 @@
         window.attachEvent('onresize', events.resizeEvent);
       }
     },
-    
+
     resizeEvent : function() {
       breakpoints.setActive();
       picture.refresh();
@@ -108,7 +120,6 @@
         if (test.isFunction(rpicture.callback.before)) {
           rpicture.callback.before.call();
         }
-
 
         // Transform picture into img tag
         picture.render(rpicture, src, pr);
@@ -188,6 +199,10 @@
       var sources = picture.getSources(element);
       var media;
 
+      if (sources.length == 0) {
+        sources = picture.getSpans(element);
+      }
+
       for (var i = 0, length = sources.length; i < length; i++) {
         // Get media attribute from source, or from media queries cache
         media = sources[i].getAttribute('media') || breakpoints.getMedia(sources[i].getAttribute('data-media'));
@@ -196,10 +211,17 @@
           return sources[i];
         }
       }
+
+      // Fallback
+      return sources[sources.length - 1];
     },
 
     getSources : function(element) {
       return element.getElementsByTagName('source');
+    },
+
+    getSpans : function(element) {
+      return element.getElementsByTagName('span');
     },
 
     getCurrentSrc : function(source) {
@@ -269,13 +291,21 @@
     executeThis: function(media, callback, match) {
       var mediaQuery = breakpoints.getMedia(media);
 
-      if (window.matchMedia(mediaQuery).matches) {
-        if (match) {
-          callback.call(rwd, media, mediaQuery);
+      if (window.matchMedia) {
+        if (window.matchMedia(mediaQuery).matches) {
+          if (match) {
+            callback.call(rwd, media, mediaQuery);
+          }
+        }
+        else {
+          if (!match) {
+            callback.call(rwd, media, mediaQuery);
+          }
         }
       }
+      // Fallback for IE
       else {
-        if (!match) {
+        if (mediaQuery === mq[mq.length - 1].media && match) {
           callback.call(rwd, media, mediaQuery);
         }
       }
@@ -310,7 +340,9 @@
       viewport.size.width = rwdTester.clientWidth;
 
       // Destroy rwdTester
-      document.body.removeChild(rwdTester);
+      if (rwdTester) {
+        document.body.removeChild(rwdTester);
+      }
     },
 
     // Get Width
@@ -339,10 +371,12 @@
 
     // Test if the object is a picture element
     isPictureElement : function(o){
-      return (
-        typeof HTMLElement === 'object' ? o instanceof HTMLElement && o.tagName === 'PICTURE' : //DOM2
-        o && typeof o === 'object' && o.nodeType === 1 && typeof o.nodeName === 'string' && o.tagName === 'PICTURE'
-      );
+      // return (
+      //   typeof HTMLElement === 'object' ? o instanceof HTMLElement && o.tagName === 'PICTURE' : //DOM2
+      //   o && typeof o === 'object' && o.nodeType === 1 && typeof o.nodeName === 'string' && o.tagName === 'PICTURE'
+      // );
+
+      return o.tagName == 'picture' || o.tagName == 'PICTURE';
     },
 
     // Test if the object is a function
@@ -449,7 +483,6 @@
           codeBlocks[media].match = [];
           codeBlocks[media].unmatch = [];
         }
-
 
         // Check callbacks and cache them
         if (callbacks.match && test.isFunction(callbacks.match)) {

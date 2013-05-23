@@ -142,6 +142,25 @@ With the jQuery adapter it's possible to use rwd picture support as a jQuery plu
 
 In rwd picture it's possible to work with media attributes in source tag, instead of data-media naming. If you set the media attribute, rwd picture will use it instead of data-media reference. It gives compatibilty for future browsers which will support natively the picture tag.
 
-## Matchmedia
+## IE Support
 
-For old browsers, matchmedia polyfill is needed.
+For IE9 and IE10 matchmedia.js polyfill is needed, in order to get access to the window.matchMedia object. For older versions of IE which doesn't support css mediaqueries rwd will execute the callbacks and the picture tag of the last defined breakpoint.
+
+### IE9 Picture support
+
+A funny thing (not the only one!) that happens in IE9 is that it removes from DOM the source tags before executing a single line of Javascript. Because of that it's not possible to process the tag picture correctly in that browser. In order to solve that rwd will look for a &lt;span&gt; element with the same attributes.
+
+    <picture alt="Průhonice" class="picture_1">
+      <source src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_m.jpg" data-media="mobile">
+      <span src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_m.jpg" data-media="mobile"></span>
+      <source src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_z.jpg" data-media="portrait">
+      <span src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_z.jpg" data-media="portrait"></span>
+      <source src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_c.jpg" data-media="landscape">
+      <span src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_c.jpg" data-media="landscape"></span>
+      <source src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_b.jpg" data-media="desktop">
+      <span src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_b.jpg" data-media="desktop"></span>
+
+      <noscript>
+        <img src="http://farm8.staticflickr.com/7118/7409677288_48733a0bda_c.jpg" alt="Průhonice">
+      </noscript>
+    </picture>
